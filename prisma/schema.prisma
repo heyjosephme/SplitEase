@@ -1,0 +1,31 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Bill {
+  id          String   @id @default(uuid())
+  createdAt   DateTime @default(now()) @map("created_at")
+  totalAmount Decimal  @map("total_amount")
+  status      String   @default("active")
+  code        String   @unique
+  shares      Share[]
+
+  @@map("bills")
+}
+
+model Share {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now()) @map("created_at")
+  billId    String   @map("bill_id")
+  name      String
+  amount    Decimal
+  status    String   @default("to_pay")
+  bill      Bill     @relation(fields: [billId], references: [id])
+
+  @@map("shares")
+}
