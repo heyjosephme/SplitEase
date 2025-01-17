@@ -1,4 +1,3 @@
-// src/app/_actions/bill.ts
 'use server'
 
 import { revalidatePath } from "next/cache"

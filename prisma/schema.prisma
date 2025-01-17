@@ -1,3 +1,4 @@
+// This is your Prisma schema file
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
@@ -8,24 +9,81 @@ generator client {
 }
 
 model Bill {
-  id          String   @id @default(uuid())
-  createdAt   DateTime @default(now()) @map("created_at")
-  totalAmount Decimal  @map("total_amount")
-  status      String   @default("active")
-  code        String   @unique
-  shares      Share[]
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
+  // Bill details
+  title       String // e.g., "Dinner at Sushi Restaurant"
+  description String? // Optional description
+  totalAmount Float // Total bill amount // float or int? cause not decimal in JPT
+  currency    String   @default("JPY") // Default to Japanese Yen
+  date        DateTime // When the bill was created
+
+  // Restaurant/location info
+  restaurantName String?
+  location       String?
+
+  // Bill status
+  status BillStatus @default(OPEN)
+
+  // Relations
+  shares  Share[] // One-to-many relation with shares
+  ownerId String // ID of the person who paid
+  owner   User    @relation(fields: [ownerId], references: [id])
+
+  // Sharing
+  shareUrl String @unique // Unique URL for sharing
+
+  @@index([ownerId])
   @@map("bills")
 }
 
-model Share {
-  id        String   @id @default(uuid())
-  createdAt DateTime @default(now()) @map("created_at")
-  billId    String   @map("bill_id")
-  name      String
-  amount    Decimal
-  status    String   @default("to_pay")
-  bill      Bill     @relation(fields: [billId], references: [id])
+model User {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
+  name  String
+  email String? @unique
+  image String? // Avatar URL
+
+  // Relations
+  bills  Bill[] // Bills created by this user
+  shares Share[] // Shares this user needs to pay
+
+  @@map("users")
+}
+
+model Share {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  amount Float // Amount this person needs to pay
+  status ShareStatus @default(PENDING)
+  note   String?
+
+  // Relations
+  billId String
+  bill   Bill   @relation(fields: [billId], references: [id])
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  @@index([billId])
+  @@index([userId])
   @@map("shares")
+}
+
+enum BillStatus {
+  OPEN // Bill is open for shares to be added
+  LOCKED // No more shares can be added
+  COMPLETED // All shares have been paid
+  CANCELLED // Bill was cancelled
+}
+
+enum ShareStatus {
+  PENDING // Share has been claimed but not paid
+  PAID // Share has been paid
+  CANCELLED // Share was cancelled
 }
