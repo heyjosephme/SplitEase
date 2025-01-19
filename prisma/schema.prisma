@@ -44,6 +44,7 @@ model User {
   name          String?
   email         String?         @unique
   emailVerified DateTime?       @map("email_verified")
+  password      String // This stores the complete bcrypt hash
   image         String? // Avatar URL
   // Relations
   bills         Bill[] // Bills created by this user
