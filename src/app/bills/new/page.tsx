@@ -1,14 +1,12 @@
-// app/bills/new/page.tsx
-import { CreateBillForm } from '@/components/create-bill-form'
-import { auth } from '@/lib/auth'
-import { redirect } from 'next/navigation'
+import { CreateBillForm } from "@/components/create-bill-form";
+import { redirect } from "next/navigation";
 
 export default async function NewBillPage() {
-  const session = await auth()
-  
-  if (!session?.user) {
-    redirect('/login')
-  }
+  // const session = await auth()
+
+  //if (!session?.user) {
+  // redirect("/login");
+  //}
 
   return (
     <main className="container mx-auto py-6 px-4">
@@ -19,9 +17,9 @@ export default async function NewBillPage() {
             Split bills easily with your friends
           </p>
         </div>
-        
+
         <CreateBillForm />
       </div>
     </main>
-  )
+  );
 }
