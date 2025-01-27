@@ -1,5 +1,6 @@
 "use client";
 import { login, signup } from "./actions";
+import AnonymousLogin from "@/components/AnonymousLogin";
 import React, { useState } from "react";
 import { useFormStatus } from "react-dom";
 import {
@@ -69,6 +70,7 @@ const AuthComponent = () => {
                   <SubmitButton>Log In</SubmitButton>
                 </div>
               </form>
+              <AnonymousLogin />
             </TabsContent>
 
             <TabsContent value="signup">
