@@ -16,11 +16,13 @@ export default function AnonymousLogin() {
     try {
       setLoading(true);
       setError(null);
+
       const { data, error } = await supabase.auth.signInAnonymously();
       console.log(data);
       if (error) throw error;
+
       router.refresh();
-      router.push("/dashboard");
+      router.push("/");
     } catch (error) {
       setError(error.message);
     } finally {
