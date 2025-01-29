@@ -1,14 +1,5 @@
-import { redirect } from "next/navigation";
-
-import { createClient } from "@/utils/supabase/server";
-
+import { requireAuth } from "@/lib/auth";
 export default async function PrivatePage() {
-  const supabase = await createClient();
-
-  const { data, error } = await supabase.auth.getUser();
-  if (error || !data?.user) {
-    redirect("/login");
-  }
-  console.log(data.user);
-  return <p>Hello {JSON.stringify(data.user)}</p>;
+  const user = await requireAuth();
+  return <p>Hello {JSON.stringify(user)}</p>;
 }
