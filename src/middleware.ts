@@ -1,7 +1,11 @@
-import { type NextRequest } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 import { updateSession } from "@/utils/supabase/middleware";
+import { DISABLE_AUTH } from "@/config/constants";
 
 export async function middleware(request: NextRequest) {
+  if (DISABLE_AUTH) {
+    return NextResponse.next();
+  }
   return await updateSession(request);
 }
 

@@ -6,13 +6,16 @@
 1. As a user, I want to create a new bill so that I can split expenses with others
    - I can input the total bill amount
    - I can add a description for the bill
-   - I can specify the date of the expense
+   - I can specify the date of the expense (auto today)
+   - I can input the address of the restaurant (manually / API)
    - I can add notes or additional details
-   - I receive a unique sharing link for the bill
+   - I receive a unique sharing link and QRcode for the bill
+   - I can attach a recipe (upload static file)
+   - Todo: OCR? auto input dishes/amount ?
 
 2. As a bill creator, I want to invite others to join the bill splitting
    - I can share a unique link with others
-   - I can see who has joined the bill
+   - I can see who has joined the bill(anyone can see the bill status)
    - I can set a deadline for joining/payment
 
 ### Joining a Bill
